@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.mybatis.mapper.ParameterMapper">
+
+    <!--List<User> getAllUser()-->
+    <select id="getAllUser" resultType="User">
+        select * from t_user
+    </select>
+
+<!--    getUserByUsername(String username)-->
+    <select id="getUserByUsername" resultType="User">
+        <!--select * from t_user where username = #{username};  -->
+        select * from t_user where username = '${username}';
+    </select>
+
+<!--    User checkLogin(String username,String password);-->
+    <select id="checkLogin" resultType="User">
+        select * from t_user where username=#{arg0} and password=#{arg1}
+    </select>
+
+<!--     User checkLoginByMap(Map<String,Object> map);-->
+    <select id="checkLoginByMap" resultType="User">
+        select * from t_user where username=#{username} and password=#{password}
+    </select>
+
+
+<!--    int insertUser(User user);-->
+    <insert id="insertUser">
+        insert into t_user values (null,#{username},#{password},#{age},#{sex},#{email});
+    </insert>
+
+
+<!--    User checkLoginByParam(@Param("username") String username,@Param("password") String password);-->
+    <select id="checkLoginByParam" resultType="User">
+        select * from t_user where username=#{username} and password=#{password}
+    </select>
+
+
+</mapper>

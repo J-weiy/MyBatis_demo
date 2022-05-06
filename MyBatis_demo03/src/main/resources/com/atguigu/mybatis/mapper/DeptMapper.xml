@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.atguigu.mybatis.mapper.DeptMapper">
+
+<!-- Dept getEmpAndDeptByStepTwo(@Param("did") Integer did);-->
+    <select id="getEmpAndDeptByStepTwo" resultType="Dept">
+        select * from t_dept where did = #{did}
+    </select>
+
+    <resultMap id="deptEmpAndDeptByStepTwo" type="dept">
+        <id property="did" column="did"></id>
+        <result property="deptName" column="dept_name"></result>
+<!--
+    collection: 处理一对多的映射关系
+    ofType: 表示该属性所对应的集合中存储数据的类型
+-->
+        <collection property="emps" ofType="Emp">
+            <id property="eid" column="eid"></id>
+            <result property="empName" column="emp_name"></result>
+            <result property="age" column="age"></result>
+            <result property="sex" column="sex"></result>
+            <result property="email" column="email"></result>
+        </collection>
+    </resultMap>
+<!--Dept getDeptAndEmp(@Param("did") Integer did);-->
+    <select id="getDeptAndEmp" resultMap="deptEmpAndDeptByStepTwo">
+        select * from t_dept left join t_emp on t_dept.did = t_emp.did where t_dept.did = #{did}
+    </select>
+
+    <resultMap id="deptAndEmpByStepResultMap" type="Dept">
+        <id property="did" column="did"></id>
+        <result property="deptName" column="dept_name"></result>
+        <collection property="emps"
+                    select="com.atguigu.mybatis.mapper.EmpMapper.getDeptAndEmpByStepTwo"
+                    column="did"
+        ></collection>
+    </resultMap>
+<!-- Dept getDeptAndEmpByStepOne(@Param("did") Integer did); -->
+    <select id="getDeptAndEmpByStepOne" resultMap="deptAndEmpByStepResultMap">
+        select * from t_dept where did=#{did};
+    </select>
+
+
+
+</mapper>

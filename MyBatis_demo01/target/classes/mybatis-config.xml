@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<!--
+        MyBatis 核心配置文件，标签的顺序
+        (properties?,settings?,typeAliases?,typeHandlers?,
+        objectFactory?,objectWrapperFactory?,reflectorFactory?,
+        plugins?,environments?,databaseIdProvider?,mappers?)".
+        -->
+
+    <!--    引入properties文件-->
+    <properties resource="jdbc.properties" />
+
+    <!--    设置类型别名-->
+    <typeAliases>
+        <!--
+            typeAlias: 设置某个类型的别名
+            属性：
+                type 设置需要设置别名的类型
+                alias 设置某个类型的别名，如果不设置该属性，那么该类型拥有默认的类名，且不区分大小写
+        -->
+<!--        <typeAlias type="com.guigu.mybatis.pojo.User" alias="User"></typeAlias>-->
+        <!-- 以包为单位，将包下所有的类型设置默认的类型别名且不区分大小写-->
+        <package name="com.guigu.mybatis.pojo"/>
+        
+    </typeAliases>
+
+
+
+    <!--设置连接数据库的环境-->
+    <environments default="development">
+        <!--每一个environment都是具体连接数据库的环境-->
+        <!--
+            一个项目中只会用一个环境，default用于使用默认使用的环境：
+            id：表示连接数据库的环境的唯一标识 不能重复
+
+        -->
+        <environment id="development">
+            <!--
+                JDBC: 在当前环境中，执行sql时，使用的是jdbc原生的事务管理方式，需要手动的提交和回滚事务
+            MANAGED：被管理，例如Spring
+            -->
+        <transactionManager type="JDBC"/>
+
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.drive}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <!--注意：如果在建sql表单的时候选了字符集（如utf8），
+                这里的value要改成：value="jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf8"-->
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+
+        </dataSource>
+    </environment>
+
+</environments>
+    <!--引入映射文件-->
+    <mappers>
+<!--        <mapper resource="mappers/UserMapper.xml"/>-->
+        <!--
+        以包为单位引入映射文件
+        要求：
+        mapper接口所在的包要和映射文件所在的包一致
+        mapper接口要和映射文件的名字一致
+        -->
+        <package name="com.guigu.mybatis.mapper"/>
+
+    </mappers>
+
+</configuration>

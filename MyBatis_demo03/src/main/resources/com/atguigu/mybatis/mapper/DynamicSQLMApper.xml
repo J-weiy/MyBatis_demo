@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.atguigu.mybatis.mapper.DynamicSQLMapper">
+
+<!--    int deleteMoreByArray(Integer[] eids);-->
+    <delete id="deleteMoreByArray">
+        delete from t_emp where
+        <foreach collection="eids" item="eid" separator="or">
+            eid = #{eid}
+        </foreach>
+        <!--delete from t_emp where eid in
+        (
+        <foreach collection="eids" item="eid" separator=",">
+            #{eid}
+        </foreach>
+        )-->
+
+    </delete>
+
+<!--    List<Emp> getEmpByChoose(Emp emp);-->
+    <select id="getEmpByChoose" resultType="Emp">
+        select * from t_emp
+        <where>
+            <choose>
+                <when test="empName != null and empName != ''">
+                    emp_name = #{empName}
+                </when>
+                <when test="age != null and age != ''">
+                    age = #{age}
+                </when>
+                <when test="sex != null and sex != ''">
+                    sex = #{sex}
+                </when>
+                <when test="email != null and email != ''">
+                    email = #{email}
+                </when>
+                <otherwise>
+                    did=1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    
+    <sql id="empColumns">eid,emp_name,age,sex,email</sql>
+
+<!--    List<Emp> getEmpByCondition(Emp emp);-->
+    <select id="getEmpByCondition" resultType="Emp">
+        select <include refid="empColumns"></include> from t_emp
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="empName != null and empName != ''">
+                emp_name = #{empName} and
+            </if>
+            <if test="age != null and age != ''">
+                age = #{age} or
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex} and
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email}
+            </if>
+        </trim>
+    </select>
+
+
+
+</mapper>

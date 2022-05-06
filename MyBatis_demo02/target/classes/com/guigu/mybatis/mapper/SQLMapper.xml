@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.mybatis.mapper.SQLMapper">
+
+<!--    List<User> getUserByLike(@Param("username") String username);-->
+    <select id="getUserByLike" resultType="User">
+        <!--select * from t_user where username like '%${username}%'-->
+        <!--select * from t_user where username like concat('%',#{username},'%')-->
+        select * from t_user where username like "%"#{username}"%"
+    </select>
+
+<!--    int deleteMore(@Param("ids") String ids);-->
+    <delete id="deleteMore">
+        delete from t_user where id in (${ids})
+    </delete>
+
+<!--    List<User> getUserByTableName(@Param("tableName") String tableName);-->
+    <select id="getUserByTableName" resultType="User">
+        select * from ${tableName}
+    </select>
+
+
+<!--    void insertUser(User user);-->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user values(null,#{username},#{password},#{age},#{sex},#{email});
+    </insert>
+
+
+
+</mapper>

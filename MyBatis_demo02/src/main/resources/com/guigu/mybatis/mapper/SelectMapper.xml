@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.mybatis.mapper.SelectMapper">
+
+<!--    User getUserById(@Param("id") Integer id);-->
+    <select id="getUserById" resultType="User">
+        select * from t_user where id = #{id};
+    </select>
+
+<!--    List<User> getAllUser();-->
+    <select id="getAllUser" resultType="User">
+        select * from t_user;
+    </select>
+
+<!--    Integer getCount();-->
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*) from t_user
+    </select>
+
+<!--    Map<String,Object> getUserByIdToMap(@Param("id") Integer id);-->
+    <select id="getUserByIdToMap" resultType="map">
+        select * from t_user where id = #{id}
+    </select>
+
+<!--    Map<String,Object> getAllUserToMap();-->
+    <select id="getAllUserToMap" resultType="map">
+        select * from t_user
+    </select>
+
+
+</mapper>
